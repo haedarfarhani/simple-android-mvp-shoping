@@ -1,0 +1,4 @@
+package com.heydar.simplemvp.presenter.base;
+
+public class BasePresenter<V> {
+}

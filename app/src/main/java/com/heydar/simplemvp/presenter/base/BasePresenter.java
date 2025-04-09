@@ -8,38 +8,42 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
 
     private static final String TAG = "BasePresenter";
-    private final CompositeDisposable compositeDisposable;
+    protected final CompositeDisposable compositeDisposable;
     protected final SchedulerProvider schedulerProvider;
+    protected final ApiService apiService;
 
-    private V mMvpView;
+    private V mvpView;
 
-    public BasePresenter(CompositeDisposable compositeDisposable, SchedulerProvider schedulerProvider) {
-        this.compositeDisposable = compositeDisposable;
+    public BasePresenter(ApiService apiService, SchedulerProvider schedulerProvider, CompositeDisposable compositeDisposable) {
+        this.apiService = apiService;
         this.schedulerProvider = schedulerProvider;
+        this.compositeDisposable = compositeDisposable;
     }
-
 
     @Override
     public void onAttach(V mvpView) {
-        mMvpView = mvpView;
+        this.mvpView = mvpView;
     }
 
     @Override
     public void onDetach() {
         compositeDisposable.dispose();
-        mMvpView = null;
+        mvpView = null;
     }
 
     public boolean isViewAttached() {
-        return mMvpView != null;
+        return mvpView != null;
     }
 
     public V getMvpView() {
-        return mMvpView;
+        checkViewAttached();
+        return mvpView;
     }
 
-    public void checkViewAttached() {
-        if (!isViewAttached()) throw new MvpViewNotAttachedException();
+    protected void checkViewAttached() {
+        if (!isViewAttached()) {
+            throw new MvpViewNotAttachedException();
+        }
     }
 
     public CompositeDisposable getCompositeDisposable() {
@@ -48,20 +52,23 @@ public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
 
     @Override
     public void handleApiError(String error) {
-        if (error == null) {
-            getMvpView().onError("");
-            return;
+        if (isViewAttached()) {
+            if (error == null || error.isEmpty()) {
+                getMvpView().onError("An unknown error occurred");
+            } else {
+                getMvpView().onError(error);
+            }
         }
     }
 
     @Override
     public void setUserAsLoggedOut() {
-
+        // منطق خروج کاربر، مثلاً فراخوانی API با apiService
     }
 
     public static class MvpViewNotAttachedException extends RuntimeException {
         public MvpViewNotAttachedException() {
-            super("Please call Presenter.onAttach(MvpView) before" + " requesting data to the Presenter");
+            super("Please call Presenter.onAttach(MvpView) before requesting data to the Presenter");
         }
     }
 }

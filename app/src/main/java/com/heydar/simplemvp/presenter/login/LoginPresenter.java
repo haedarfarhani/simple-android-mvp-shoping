@@ -11,11 +11,13 @@ import javax.inject.Inject;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
 public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V> implements LoginMvpPresenter<V> {
-    private final LoginRepository repository;
+
     private static final String TAG = "LoginPresenter";
+    private final LoginRepository repository;
+
     @Inject
-    public LoginPresenter(CompositeDisposable compositeDisposable, SchedulerProvider schedulerProvider, LoginRepository repository) {
-        super(compositeDisposable, schedulerProvider);
+    public LoginPresenter(LoginRepository repository, ApiService apiService, CompositeDisposable compositeDisposable, SchedulerProvider schedulerProvider) {
+        super(apiService, schedulerProvider, compositeDisposable);
         this.repository = repository;
     }
 
@@ -41,13 +43,8 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V> imp
     }
 
     @Override
-    public void onAttach(V mvpView) {
-
-    }
-
-    @Override
     public void onDetach() {
-
+        compositeDisposable.clear();
     }
 
     @Override

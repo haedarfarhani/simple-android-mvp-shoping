@@ -34,7 +34,7 @@ public class NetworkModule {
     @Provides
     @Singleton
     HttpUrl provideBaseUrl() {
-        return HttpUrl.parse(AppConstants.API_ENDPOINT); // فرضاً API_ENDPOINT توی AppConstants تعریف شده
+        return HttpUrl.parse(AppConstants.API_ENDPOINT);
     }
 
     @Provides

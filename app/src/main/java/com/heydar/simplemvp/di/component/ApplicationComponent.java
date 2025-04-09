@@ -6,7 +6,6 @@ import android.content.Context;
 
 import com.heydar.simplemvp.MainApplication;
 import com.heydar.simplemvp.data.local.database.ObjectBox;
-import com.heydar.simplemvp.data.network.ApiService;
 import com.heydar.simplemvp.di.ApplicationContext;
 import com.heydar.simplemvp.di.module.ApplicationModule;
 import com.heydar.simplemvp.di.module.NetworkModule;
@@ -18,7 +17,7 @@ import dagger.Component;
 
 
 @Singleton
-@Component(modules = {ApplicationModule.class, NetworkModule.class})
+@Component(modules = {ApplicationModule.class})
 public interface ApplicationComponent {
 
     void inject(MainApplication app);
@@ -31,6 +30,4 @@ public interface ApplicationComponent {
     Application application();
 
     ObjectBox getDataManager();
-
-    ApiService provideApiService();
 }

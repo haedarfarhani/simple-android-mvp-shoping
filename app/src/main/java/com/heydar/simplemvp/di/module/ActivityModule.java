@@ -47,44 +47,47 @@ public class ActivityModule {
     }
 
     @Provides
-    @PerActivity
     LinearLayoutManager provideLinearLayoutManager() {
         return new LinearLayoutManager(activity);
     }
 
     @Provides
-    @PerActivity
     CompositeDisposable provideCompositeDisposable() {
         return new CompositeDisposable();
     }
 
     @Provides
-    @PerActivity
     SchedulerProvider provideSchedulerProvider() {
         return new AppSchedulerProvider();
     }
 
+
     @Provides
-    @PerActivity
     LoginRepository provideLoginRepository(ApiService apiService) {
         return new LoginRepository(apiService);
     }
 
+//    @Provides
+//    @PerActivity
+//    LoginMvpPresenter<LoginMvpView> provideLoginPresenter(LoginRepository repository, ApiService apiService, SchedulerProvider schedulerProvider, CompositeDisposable compositeDisposable) {
+//        return new LoginPresenter<>(repository, apiService, compositeDisposable, schedulerProvider);
+//    }
+
     @Provides
     @PerActivity
-    LoginMvpPresenter<LoginMvpView> provideLoginPresenter(CompositeDisposable compositeDisposable, SchedulerProvider schedulerProvider, LoginRepository repository) {
-        return new LoginPresenter<>(compositeDisposable, schedulerProvider, repository);
+    LoginMvpPresenter<LoginMvpView> provideLoginPresenter(LoginPresenter<LoginMvpView> loginPresenter) {
+        return loginPresenter;
     }
 
     @Provides
     @PerActivity
-    MainMvpPresenter<MainMvpView> provideMainPresenter(CompositeDisposable compositeDisposable) {
-        return new MainPresenter<>(compositeDisposable);
+    MainMvpPresenter<MainMvpView> provideMainPresenter(ApiService apiService, CompositeDisposable compositeDisposable, SchedulerProvider schedulerProvider) {
+        return new MainPresenter<>(apiService, schedulerProvider, compositeDisposable);
     }
 
     @Provides
     @PerActivity
-    ProductAddMvpPresenter<ProductAddMvpView> provideProductAddPresenter(CompositeDisposable compositeDisposable) {
-        return new ProductAddPresenter<>(compositeDisposable);
+    ProductAddMvpPresenter<ProductAddMvpView> provideProductAddPresenter(ApiService apiService, CompositeDisposable compositeDisposable, SchedulerProvider schedulerProvider) {
+        return new ProductAddPresenter<>(apiService, schedulerProvider, compositeDisposable);
     }
 }

@@ -83,4 +83,5 @@ dependencies {
     implementation(libs.logging.interceptor)
 
     implementation(libs.timber)
+    implementation (libs.lottie)
 }

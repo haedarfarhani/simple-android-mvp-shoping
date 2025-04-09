@@ -1,4 +1,4 @@
-package com.heydar.simplemvp.view.addproduct
+package com.heydar.simplemvp.view.productadd
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

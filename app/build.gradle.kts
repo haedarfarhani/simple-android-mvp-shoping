@@ -1,7 +1,20 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("kotlin-parcelize")
+    kotlin("kapt")
 }
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath(libs.objectbox.gradle.plugin)
+    }
+}
+
+apply(plugin = "io.objectbox")
 
 android {
     namespace = "com.heydar.simplemvp"
@@ -30,6 +43,9 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {
@@ -44,24 +60,27 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     // reactive
-    implementation("io.reactivex.rxjava3:rxjava:3.1.6")
-    implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
+    implementation(libs.rxjava)
+    implementation(libs.rxandroid)
 
     // dependency injection
-    implementation("com.google.dagger:dagger:2.28.3")
-    annotationProcessor("com.google.dagger:dagger-compiler:2.56.1")
-    compileOnly("javax.annotation:jsr250-api:1.0")
-    implementation("javax.inject:javax.inject:1")
+    implementation(libs.dagger)
+    kapt(libs.dagger.compiler)
 
     // ObjectBox
     implementation(libs.objectbox.android)
     implementation(libs.objectbox.rxjava3)
-    annotationProcessor (libs.objectbox.processor)
+    annotationProcessor(libs.objectbox.processor)
 
     // parser
-    implementation ("com.google.code.gson:gson:2.11.0")
+    implementation(libs.gson)
 
     //networking
     implementation(libs.okhttp)
+    implementation(libs.retrofit)
+    implementation(libs.adapter.rxjava3)
+    implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
+
+    implementation(libs.timber)
 }

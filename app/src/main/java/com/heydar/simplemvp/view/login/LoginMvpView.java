@@ -1,4 +1,7 @@
 package com.heydar.simplemvp.view.login;
 
-public interface LoginMvpView {
+import com.heydar.simplemvp.presenter.base.MvpView;
+
+public interface LoginMvpView  extends MvpView {
+    void onLoginSuccess(String token);
 }

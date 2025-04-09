@@ -1,16 +1,21 @@
 package com.heydar.simplemvp.presenter.base;
 
+import com.heydar.simplemvp.data.network.ApiService;
+import com.heydar.simplemvp.utils.SchedulerProvider;
+
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
 public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
 
     private static final String TAG = "BasePresenter";
-    private final CompositeDisposable mCompositeDisposable;
+    private final CompositeDisposable compositeDisposable;
+    protected final SchedulerProvider schedulerProvider;
 
     private V mMvpView;
 
-    public BasePresenter(CompositeDisposable mCompositeDisposable) {
-        this.mCompositeDisposable = mCompositeDisposable;
+    public BasePresenter(CompositeDisposable compositeDisposable, SchedulerProvider schedulerProvider) {
+        this.compositeDisposable = compositeDisposable;
+        this.schedulerProvider = schedulerProvider;
     }
 
 
@@ -21,7 +26,7 @@ public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
 
     @Override
     public void onDetach() {
-        mCompositeDisposable.dispose();
+        compositeDisposable.dispose();
         mMvpView = null;
     }
 
@@ -38,7 +43,7 @@ public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
     }
 
     public CompositeDisposable getCompositeDisposable() {
-        return mCompositeDisposable;
+        return compositeDisposable;
     }
 
     @Override

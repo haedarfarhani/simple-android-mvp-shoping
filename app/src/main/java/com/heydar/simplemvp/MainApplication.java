@@ -15,6 +15,8 @@ public class MainApplication extends Application {
     @Inject
     ObjectBox mDataManager;
 
+    private int test;
+
     private ApplicationComponent mApplicationComponent;
     private NetworkComponent networkComponent;
 
@@ -41,5 +43,13 @@ public class MainApplication extends Application {
 
     public void setComponent(ApplicationComponent applicationComponent) {
         mApplicationComponent = applicationComponent;
+    }
+
+    public int getTest() {
+        return test;
+    }
+
+    public void setTest(int test) {
+        this.test = test;
     }
 }
